@@ -39,7 +39,12 @@ app.get('/states/', async (request, response) => {
         ORDER BY 
         state_id;`
   const statesArray = await db.all(getStatesQuery)
-  response.send(statesArray)
+  const formattedPlayers = statesArray.map(eachstate => ({
+    stateId: eachstate.state_id,
+    stateName: eachstate.state_name,
+    population: eachstate.population,
+  }))
+  response.send(formattedPlayers)
 })
 
 //GET state API
@@ -54,7 +59,12 @@ app.get('/states/:stateId/', async (request, response) => {
   WHERE 
   state_id = ${stateId}`
   const stateArray = await db.get(getStateQuery)
-  response.send(stateArray)
+  const state = {
+    stateId: stateArray.state_id,
+    stateName: stateArray.state_name,
+    population: stateArray.population,
+  }
+  response.send(state)
 })
 
 //POST district API
@@ -77,7 +87,7 @@ app.post('/districts/', async (request, response) => {
       );`
 
   const dbResponse = await db.run(addDistrictQuery)
-  response.send('District Succefully Added')
+  response.send('District Successfully Added')
 })
 
 //GET District API
@@ -91,8 +101,17 @@ app.get('/districts/:districtId/', async (request, response) => {
   district
   WHERE 
   district_id = ${districtId}`
-  const districtArray = await db.all(getDistrict)
-  response.send(districtArray)
+  const districtArray = await db.get(getDistrict)
+  const district = {
+    districtId: districtArray.district_id,
+    districtName: districtArray.district_name,
+    stateId: districtArray.state_id,
+    cases: districtArray.cases,
+    cured: districtArray.cured,
+    active: districtArray.active,
+    deaths: districtArray.deaths,
+  }
+  response.send(district)
 })
 
 //DELETE district API

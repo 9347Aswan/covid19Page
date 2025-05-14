@@ -37,7 +37,7 @@ Content-Type: application/json
   "deaths": 104
 }
 
-GET http://localhost:3000/states/32
+GET http://localhost:3000/states/32/stats
 
 ###
-GET http://localhost/3000/districts/322/
+GET http://localhost:3000/districts/6/details/
